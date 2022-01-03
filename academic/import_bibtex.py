@@ -157,6 +157,10 @@ def parse_bibtex_entry(
         else:
             links += [{"name": "URL", "url": sane_url}]
 
+    if "artifacts" in entry:
+        sane_url = clean_bibtex_str(entry["artifacts"])
+        links += [{"name": "Artifacts", "url": sane_url}]
+
     if links:
         page.fm["links"] = links
 

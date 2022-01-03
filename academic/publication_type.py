@@ -12,6 +12,7 @@ class PublicationType(Enum):
     BookSection = 6
     Thesis = 7  # (v4.2+ required)
     Patent = 8  # (v4.2+ required)
+    Poster = 9  # (custom data/publication_types.toml required)
 
 
 PUB_TYPES = {
@@ -31,4 +32,5 @@ PUB_TYPES = {
     "thesis": PublicationType.Thesis,
     "techreport": PublicationType.Report,
     "unpublished": PublicationType.Preprint,
+    "poster": PublicationType.Poster,
 }
