@@ -142,6 +142,9 @@ def parse_bibtex_entry(
     if "keywords" in entry:
         page.fm["tags"] = clean_bibtex_tags(entry["keywords"], normalize)
 
+    if "groups" in entry:
+        page.fm["categories"] = clean_bibtex_tags(entry["groups"], False)
+
     if "doi" in entry:
         page.fm["doi"] = clean_bibtex_str(entry["doi"])
 
