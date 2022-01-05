@@ -54,6 +54,9 @@ def parse_args(args):
     parser_a.add_argument(
         "--normalize", action="store_true", help="Normalize each keyword to lowercase with uppercase first letter",
     )
+    parser_a.add_argument(
+        "--capitalize", action="store_true", help="Capitalize only lowercase keywords",
+    )
     parser_a.add_argument("-v", "--verbose", action="store_true", required=False, help="Verbose mode")
     parser_a.add_argument(
         "-dr", "--dry-run", action="store_true", required=False, help="Perform a dry run (Bibtex only)",
@@ -88,6 +91,7 @@ def parse_args(args):
                 featured=known_args.featured,
                 overwrite=known_args.overwrite,
                 normalize=known_args.normalize,
+                capitalize=known_args.capitalize,
                 dry_run=known_args.dry_run,
             )
 

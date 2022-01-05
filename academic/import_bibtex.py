@@ -18,7 +18,7 @@ from academic.publication_type import PUB_TYPES, PublicationType
 
 
 def import_bibtex(
-    bibtex, pub_dir=os.path.join("content", "publication"), featured=False, overwrite=False, normalize=False, dry_run=False,
+    bibtex, pub_dir=os.path.join("content", "publication"), featured=False, overwrite=False, normalize=False, capitalize=False, dry_run=False,
 ):
     """Import publications from BibTeX file"""
     from academic.cli import AcademicError, log
@@ -37,12 +37,12 @@ def import_bibtex(
         bib_database = bibtexparser.load(bibtex_file, parser=parser)
         for entry in bib_database.entries:
             parse_bibtex_entry(
-                entry, pub_dir=pub_dir, featured=featured, overwrite=overwrite, normalize=normalize, dry_run=dry_run,
+                entry, pub_dir=pub_dir, featured=featured, overwrite=overwrite, normalize=normalize, capitalize=capitalize, dry_run=dry_run,
             )
 
 
 def parse_bibtex_entry(
-    entry, pub_dir=os.path.join("content", "publication"), featured=False, overwrite=False, normalize=False, dry_run=False,
+    entry, pub_dir=os.path.join("content", "publication"), featured=False, overwrite=False, normalize=False, capitalize=False, dry_run=False,
 ):
     """Parse a bibtex entry and generate corresponding publication bundle"""
     from academic.cli import log
@@ -140,7 +140,7 @@ def parse_bibtex_entry(
     page.fm["publication"] = publication
 
     if "keywords" in entry:
-        page.fm["tags"] = clean_bibtex_tags(entry["keywords"], normalize)
+        page.fm["tags"] = clean_bibtex_tags(entry["keywords"], normalize, capitalize)
 
     if "groups" in entry:
         page.fm["categories"] = clean_bibtex_tags(entry["groups"], False)
@@ -233,7 +233,7 @@ def clean_bibtex_str(s):
     return s
 
 
-def clean_bibtex_tags(s, normalize=False):
+def clean_bibtex_tags(s, normalize=False, capitalize=False):
     """Clean BibTeX keywords and convert to TOML tags"""
 
     tags = clean_bibtex_str(s).split(",")
@@ -241,6 +241,9 @@ def clean_bibtex_tags(s, normalize=False):
 
     if normalize:
         tags = [tag.lower().capitalize() for tag in tags]
+
+    if capitalize:
+        tags = [tag.lower().capitalize() if tag.lower() == tag else tag for tag in tags]
 
     return tags
 
